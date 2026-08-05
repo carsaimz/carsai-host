@@ -1,0 +1,414 @@
+{
+  "common": {
+    "appName": "CARSAI HOST",
+    "tagline": "Hospedagem web gratuita para todos",
+    "loading": "A carregar...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Pesquisar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "submit": "Submeter",
+    "confirm": "Confirmar",
+    "yes": "Sim",
+    "no": "Não",
+    "all": "Todos",
+    "none": "Nenhum",
+    "actions": "Acções",
+    "status": "Estado",
+    "name": "Nome",
+    "email": "Email",
+    "password": "Palavra-passe",
+    "username": "Nome de utilizador",
+    "domain": "Domínio",
+    "date": "Data",
+    "size": "Tamanho",
+    "type": "Tipo",
+    "description": "Descrição",
+    "optional": "opcional",
+    "required": "obrigatório"
+  },
+  "nav": {
+    "home": "Início",
+    "features": "Funcionalidades",
+    "about": "Sobre",
+    "blog": "Blog",
+    "forum": "Fórum",
+    "contact": "Contacto",
+    "login": "Entrar",
+    "register": "Registar",
+    "dashboard": "Painel",
+    "logout": "Sair",
+    "profile": "Perfil",
+    "settings": "Definições",
+    "admin": "Administração"
+  },
+  "home": {
+    "hero": {
+      "title": "A sua hospedagem web, 100% gratuita",
+      "subtitle": "Servidores reais via iFastNet (Byet). Crie a sua conta em segundos — sem cartão, sem custos, sem pegadinhas.",
+      "cta": "Começar agora",
+      "ctaSecondary": "Ver funcionalidades"
+    },
+    "features": {
+      "title": "Tudo o que precisa, grátis",
+      "subtitle": "Ferramentas profissionais para construir a sua presença online"
+    },
+    "cta": {
+      "title": "Pronto para começar?",
+      "subtitle": "Junte-se a milhares de utilizadores que já confiam no CARSAI HOST",
+      "button": "Criar conta gratuita"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Criar a sua conta",
+      "subtitle": "Leva menos de 1 minuto. Grátis para sempre.",
+      "submit": "Criar conta",
+      "haveAccount": "Já tem conta?",
+      "loginLink": "Entrar",
+      "acceptTerms": "Aceito os Termos de Serviço e Política de Privacidade",
+      "success": "Conta criada! Verifique o seu email para activar.",
+      "verifyEmail": "Verificar email"
+    },
+    "login": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Entre na sua conta para continuar",
+      "submit": "Entrar",
+      "forgotPassword": "Esqueceu a palavra-passe?",
+      "noAccount": "Ainda não tem conta?",
+      "registerLink": "Registar",
+      "rememberMe": "Manter sessão iniciada",
+      "twoFactorTitle": "Verificação em 2 passos",
+      "twoFactorSubtitle": "Introduza o código de 6 dígitos da sua app de autenticação",
+      "invalidCredentials": "Email ou palavra-passe inválidos",
+      "accountSuspended": "A sua conta está suspensa"
+    },
+    "forgot": {
+      "title": "Recuperar palavra-passe",
+      "subtitle": "Enviaremos um link de recuperação para o seu email",
+      "submit": "Enviar link",
+      "success": "Se o email existir, receberá um link de recuperação",
+      "backToLogin": "Voltar ao login"
+    },
+    "reset": {
+      "title": "Nova palavra-passe",
+      "submit": "Actualizar palavra-passe",
+      "success": "Palavra-passe actualizada! Pode iniciar sessão."
+    },
+    "oauth": {
+      "google": "Continuar com Google",
+      "github": "Continuar com GitHub"
+    },
+    "verifyEmail": {
+      "title": "Verifique o seu email",
+      "subtitle": "Enviámos um link de verificação para {{email}}",
+      "resend": "Reenviar email",
+      "resent": "Email reenviado!",
+      "verified": "Email verificado! Pode iniciar sessão."
+    }
+  },
+  "dashboard": {
+    "title": "Painel de controlo",
+    "welcome": "Olá, {{name}}",
+    "overview": "Visão geral",
+    "stats": {
+      "accounts": "Contas de hospedagem",
+      "tickets": "Tickets abertos",
+      "storage": "Armazenamento usado",
+      "bandwidth": "Tráfego mensal",
+      "domains": "Domínios",
+      "databases": "Bases de dados",
+      "emails": "Contas de email",
+      "ftpAccounts": "Contas FTP"
+    },
+    "quickActions": "Acções rápidas",
+    "recentActivity": "Actividade recente",
+    "createAccount": "Criar nova conta",
+    "openTicket": "Abrir ticket",
+    "uploadFile": "Enviar ficheiro"
+  },
+  "accounts": {
+    "title": "Contas de hospedagem",
+    "create": "Criar conta",
+    "empty": "Ainda não tem contas de hospedagem",
+    "createFirst": "Criar a primeira conta",
+    "status": {
+      "creating": "A criar...",
+      "active": "Activa",
+      "suspended": "Suspensa",
+      "terminated": "Terminada",
+      "failed": "Falhou"
+    },
+    "actions": {
+      "manage": "Gerir",
+      "suspend": "Suspender",
+      "unsuspend": "Reativar",
+      "resetPassword": "Reset palavra-passe",
+      "delete": "Eliminar",
+      "openCpanel": "Abrir cPanel"
+    },
+    "form": {
+      "title": "Nova conta de hospedagem",
+      "domainLabel": "Domínio ou sub-domínio",
+      "domainPlaceholder": "ex: meusite",
+      "tldLabel": "Extensão",
+      "customDomain": "Ou use o seu próprio domínio",
+      "customDomainPlaceholder": "ex: meusite.com",
+      "packageLabel": "Pacote",
+      "tosLabel": "Aceito os termos de uso aceitável"
+    },
+    "details": {
+      "credentials": "Credenciais",
+      "cpanel": "URL do cPanel",
+      "ftp": "FTP",
+      "mysql": "MySQL",
+      "nameservers": "Nameservers",
+      "serverIp": "IP do servidor",
+      "copyToClipboard": "Copiar"
+    }
+  },
+  "files": {
+    "title": "Gestor de ficheiros",
+    "upload": "Enviar",
+    "newFolder": "Nova pasta",
+    "download": "Download",
+    "rename": "Renomear",
+    "permissions": "Permissões",
+    "extract": "Extrair",
+    "compress": "Comprimir",
+    "edit": "Editar",
+    "empty": "Esta pasta está vazia",
+    "path": "Caminho",
+    "size": "Tamanho",
+    "modified": "Modificado"
+  },
+  "databases": {
+    "title": "Bases de dados",
+    "create": "Criar base de dados",
+    "name": "Nome da BD",
+    "user": "Utilizador",
+    "password": "Palavra-passe",
+    "openPhpmyadmin": "Abrir phpMyAdmin",
+    "empty": "Nenhuma base de dados criada"
+  },
+  "domains": {
+    "title": "Domínios",
+    "add": "Adicionar domínio",
+    "dnsRecords": "Registos DNS",
+    "ssl": "SSL",
+    "issueSsl": "Emitir SSL",
+    "renewSsl": "Renovar SSL",
+    "sslActive": "SSL activo",
+    "sslExpires": "Expira em {{date}}"
+  },
+  "ssl": {
+    "title": "Certificados SSL",
+    "issue": "Emitir certificado",
+    "provider": "Fornecedor",
+    "letsencrypt": "Let's Encrypt",
+    "zerossl": "ZeroSSL",
+    "gogetssl": "GoGetSSL",
+    "status": {
+      "pending": "Pendente",
+      "issued": "Emitido",
+      "failed": "Falhou",
+      "expiring": "A expirar"
+    }
+  },
+  "backups": {
+    "title": "Backups",
+    "create": "Criar backup",
+    "restore": "Restaurar",
+    "download": "Download",
+    "provider": "Fornecedor",
+    "local": "Local",
+    "gdrive": "Google Drive",
+    "dropbox": "Dropbox",
+    "lastBackup": "Último backup",
+    "size": "Tamanho",
+    "empty": "Nenhum backup disponível"
+  },
+  "cron": {
+    "title": "Tarefas agendadas",
+    "create": "Nova tarefa",
+    "name": "Nome",
+    "command": "Comando",
+    "schedule": "Agendamento (cron)",
+    "scheduleExamples": "Exemplos: 0 2 * * * (diariamente às 2h), */5 * * * * (a cada 5 min)",
+    "lastRun": "Última execução",
+    "nextRun": "Próxima execução",
+    "active": "Activo"
+  },
+  "tickets": {
+    "title": "Tickets de suporte",
+    "new": "Novo ticket",
+    "subject": "Assunto",
+    "body": "Descrição",
+    "priority": "Prioridade",
+    "department": "Departamento",
+    "status": {
+      "open": "Aberto",
+      "pending": "Aguarda resposta",
+      "resolved": "Resolvido",
+      "closed": "Fechado"
+    },
+    "priorities": {
+      "low": "Baixa",
+      "normal": "Normal",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+    "departments": {
+      "general": "Geral",
+      "technical": "Técnico",
+      "abuse": "Abuso",
+      "billing": "Facturação"
+    },
+    "reply": "Responder",
+    "replies": "Respostas",
+    "empty": "Nenhum ticket aberto",
+    "createdAt": "Criado em"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Ler mais",
+    "publishedOn": "Publicado em {{date}}",
+    "by": "por {{author}}",
+    "views": "{{count}} visualizações",
+    "categories": "Categorias",
+    "tags": "Tags",
+    "sharePost": "Partilhar",
+    "relatedPosts": "Artigos relacionados",
+    "comments": "Comentários",
+    "empty": "Nenhum artigo publicado"
+  },
+  "forum": {
+    "title": "Fórum",
+    "categories": "Categorias",
+    "topics": "Tópicos",
+    "replies": "Respostas",
+    "newTopic": "Novo tópico",
+    "subject": "Assunto",
+    "body": "Mensagem",
+    "lastReply": "Última resposta",
+    "by": "por",
+    "pinned": "Fixado",
+    "locked": "Bloqueado",
+    "reply": "Responder",
+    "empty": "Nenhum tópico nesta categoria"
+  },
+  "profile": {
+    "title": "Perfil",
+    "personalInfo": "Informação pessoal",
+    "security": "Segurança",
+    "preferences": "Preferências",
+    "changePassword": "Alterar palavra-passe",
+    "currentPassword": "Palavra-passe actual",
+    "newPassword": "Nova palavra-passe",
+    "confirmPassword": "Confirmar palavra-passe",
+    "twoFactor": "Verificação em 2 passos",
+    "enable2fa": "Activar 2FA",
+    "disable2fa": "Desactivar 2FA",
+    "scanQr": "Leia este QR code com a sua app de autenticação (Google Authenticator, Authy)",
+    "enterCode": "Introduza o código de 6 dígitos",
+    "apiTokens": "Tokens de API",
+    "createToken": "Criar token",
+    "tokenName": "Nome do token",
+    "scopes": "Permissões",
+    "copyToken": "Copie agora — não voltará a ser exibido",
+    "language": "Idioma",
+    "timezone": "Fuso horário"
+  },
+  "admin": {
+    "title": "Administração",
+    "users": "Utilizadores",
+    "accounts": "Contas",
+    "tickets": "Tickets",
+    "blog": "Blog",
+    "forum": "Fórum",
+    "settings": "Definições",
+    "system": "Sistema",
+    "stats": {
+      "totalUsers": "Total de utilizadores",
+      "totalAccounts": "Total de contas",
+      "activeAccounts": "Contas activas",
+      "suspendedAccounts": "Contas suspensas",
+      "openTickets": "Tickets abertos",
+      "totalPosts": "Posts do blog",
+      "totalTopics": "Tópicos do fórum"
+    },
+    "user": {
+      "role": "Papel",
+      "status": "Estado",
+      "actions": {
+        "suspend": "Suspender",
+        "activate": "Activar",
+        "ban": "Banir",
+        "delete": "Eliminar",
+        "makeAdmin": "Tornar admin",
+        "makeMod": "Tornar moderador"
+      }
+    }
+  },
+  "errors": {
+    "404": "Página não encontrada",
+    "404desc": "A página que procura não existe ou foi movida.",
+    "500": "Erro interno do servidor",
+    "500desc": "Algo correu mal. Tente novamente mais tarde.",
+    "403": "Acesso negado",
+    "403desc": "Não tem permissão para aceder a este recurso.",
+    "401": "Não autenticado",
+    "401desc": "Tem de iniciar sessão para aceder a esta área.",
+    "networkError": "Erro de rede. Verifique a sua ligação.",
+    "serverError": "Erro no servidor. Tente novamente.",
+    "validationError": "Dados inválidos",
+    "unauthorized": "Não autorizado",
+    "rateLimited": "Muitos pedidos. Tente mais tarde.",
+    "sessionExpired": "Sessão expirada. Inicie sessão novamente."
+  },
+  "validation": {
+    "required": "{{field}} é obrigatório",
+    "minLength": "{{field}} deve ter pelo menos {{min}} caracteres",
+    "maxLength": "{{field}} deve ter no máximo {{max}} caracteres",
+    "email": "Email inválido",
+    "passwordWeak": "Palavra-passe demasiado fraca",
+    "passwordMismatch": "As palavras-passe não coincidem",
+    "invalidDomain": "Domínio inválido",
+    "invalidCron": "Expressão cron inválida"
+  },
+  "success": {
+    "saved": "Alterações guardadas",
+    "created": "Criado com sucesso",
+    "updated": "Actualizado com sucesso",
+    "deleted": "Eliminado com sucesso",
+    "sent": "Enviado com sucesso",
+    "copied": "Copiado para a área de transferência"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados",
+    "product": "Produto",
+    "company": "Empresa",
+    "resources": "Recursos",
+    "legal": "Legal",
+    "terms": "Termos de Serviço",
+    "privacy": "Política de Privacidade",
+    "cookies": "Política de Cookies",
+    "abuse": "Reportar abuso",
+    "status": "Estado do serviço",
+    "community": "Comunidade",
+    "madeWith": "Feito com"
+  },
+  "language": {
+    "selector": "Idioma",
+    "pt": "Português",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  }
+}

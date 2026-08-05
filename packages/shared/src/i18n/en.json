@@ -1,0 +1,414 @@
+{
+  "common": {
+    "appName": "CARSAI HOST",
+    "tagline": "Free web hosting for everyone",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "all": "All",
+    "none": "None",
+    "actions": "Actions",
+    "status": "Status",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "domain": "Domain",
+    "date": "Date",
+    "size": "Size",
+    "type": "Type",
+    "description": "Description",
+    "optional": "optional",
+    "required": "required"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "about": "About",
+    "blog": "Blog",
+    "forum": "Forum",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero": {
+      "title": "Your web hosting, 100% free",
+      "subtitle": "Real servers via iFastNet (Byet). Create your account in seconds — no card, no cost, no catch.",
+      "cta": "Get started",
+      "ctaSecondary": "View features"
+    },
+    "features": {
+      "title": "Everything you need, free",
+      "subtitle": "Professional tools to build your online presence"
+    },
+    "cta": {
+      "title": "Ready to start?",
+      "subtitle": "Join thousands of users who already trust CARSAI HOST",
+      "button": "Create free account"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Takes less than 1 minute. Free forever.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Login",
+      "acceptTerms": "I accept the Terms of Service and Privacy Policy",
+      "success": "Account created! Check your email to activate.",
+      "verifyEmail": "Verify email"
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account to continue",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account yet?",
+      "registerLink": "Register",
+      "rememberMe": "Keep me signed in",
+      "twoFactorTitle": "Two-factor verification",
+      "twoFactorSubtitle": "Enter the 6-digit code from your authenticator app",
+      "invalidCredentials": "Invalid email or password",
+      "accountSuspended": "Your account is suspended"
+    },
+    "forgot": {
+      "title": "Recover password",
+      "subtitle": "We'll send a recovery link to your email",
+      "submit": "Send link",
+      "success": "If the email exists, you'll receive a recovery link",
+      "backToLogin": "Back to login"
+    },
+    "reset": {
+      "title": "New password",
+      "submit": "Update password",
+      "success": "Password updated! You can now sign in."
+    },
+    "oauth": {
+      "google": "Continue with Google",
+      "github": "Continue with GitHub"
+    },
+    "verifyEmail": {
+      "title": "Verify your email",
+      "subtitle": "We sent a verification link to {{email}}",
+      "resend": "Resend email",
+      "resent": "Email resent!",
+      "verified": "Email verified! You can now sign in."
+    }
+  },
+  "dashboard": {
+    "title": "Control panel",
+    "welcome": "Hello, {{name}}",
+    "overview": "Overview",
+    "stats": {
+      "accounts": "Hosting accounts",
+      "tickets": "Open tickets",
+      "storage": "Storage used",
+      "bandwidth": "Monthly bandwidth",
+      "domains": "Domains",
+      "databases": "Databases",
+      "emails": "Email accounts",
+      "ftpAccounts": "FTP accounts"
+    },
+    "quickActions": "Quick actions",
+    "recentActivity": "Recent activity",
+    "createAccount": "Create new account",
+    "openTicket": "Open ticket",
+    "uploadFile": "Upload file"
+  },
+  "accounts": {
+    "title": "Hosting accounts",
+    "create": "Create account",
+    "empty": "You have no hosting accounts yet",
+    "createFirst": "Create your first account",
+    "status": {
+      "creating": "Creating...",
+      "active": "Active",
+      "suspended": "Suspended",
+      "terminated": "Terminated",
+      "failed": "Failed"
+    },
+    "actions": {
+      "manage": "Manage",
+      "suspend": "Suspend",
+      "unsuspend": "Reactivate",
+      "resetPassword": "Reset password",
+      "delete": "Delete",
+      "openCpanel": "Open cPanel"
+    },
+    "form": {
+      "title": "New hosting account",
+      "domainLabel": "Domain or subdomain",
+      "domainPlaceholder": "e.g. mysite",
+      "tldLabel": "Extension",
+      "customDomain": "Or use your own domain",
+      "customDomainPlaceholder": "e.g. mysite.com",
+      "packageLabel": "Package",
+      "tosLabel": "I accept the acceptable use terms"
+    },
+    "details": {
+      "credentials": "Credentials",
+      "cpanel": "cPanel URL",
+      "ftp": "FTP",
+      "mysql": "MySQL",
+      "nameservers": "Nameservers",
+      "serverIp": "Server IP",
+      "copyToClipboard": "Copy"
+    }
+  },
+  "files": {
+    "title": "File manager",
+    "upload": "Upload",
+    "newFolder": "New folder",
+    "download": "Download",
+    "rename": "Rename",
+    "permissions": "Permissions",
+    "extract": "Extract",
+    "compress": "Compress",
+    "edit": "Edit",
+    "empty": "This folder is empty",
+    "path": "Path",
+    "size": "Size",
+    "modified": "Modified"
+  },
+  "databases": {
+    "title": "Databases",
+    "create": "Create database",
+    "name": "Database name",
+    "user": "User",
+    "password": "Password",
+    "openPhpmyadmin": "Open phpMyAdmin",
+    "empty": "No databases created"
+  },
+  "domains": {
+    "title": "Domains",
+    "add": "Add domain",
+    "dnsRecords": "DNS records",
+    "ssl": "SSL",
+    "issueSsl": "Issue SSL",
+    "renewSsl": "Renew SSL",
+    "sslActive": "SSL active",
+    "sslExpires": "Expires on {{date}}"
+  },
+  "ssl": {
+    "title": "SSL certificates",
+    "issue": "Issue certificate",
+    "provider": "Provider",
+    "letsencrypt": "Let's Encrypt",
+    "zerossl": "ZeroSSL",
+    "gogetssl": "GoGetSSL",
+    "status": {
+      "pending": "Pending",
+      "issued": "Issued",
+      "failed": "Failed",
+      "expiring": "Expiring"
+    }
+  },
+  "backups": {
+    "title": "Backups",
+    "create": "Create backup",
+    "restore": "Restore",
+    "download": "Download",
+    "provider": "Provider",
+    "local": "Local",
+    "gdrive": "Google Drive",
+    "dropbox": "Dropbox",
+    "lastBackup": "Last backup",
+    "size": "Size",
+    "empty": "No backups available"
+  },
+  "cron": {
+    "title": "Scheduled tasks",
+    "create": "New task",
+    "name": "Name",
+    "command": "Command",
+    "schedule": "Schedule (cron)",
+    "scheduleExamples": "Examples: 0 2 * * * (daily at 2am), */5 * * * * (every 5 min)",
+    "lastRun": "Last run",
+    "nextRun": "Next run",
+    "active": "Active"
+  },
+  "tickets": {
+    "title": "Support tickets",
+    "new": "New ticket",
+    "subject": "Subject",
+    "body": "Description",
+    "priority": "Priority",
+    "department": "Department",
+    "status": {
+      "open": "Open",
+      "pending": "Awaiting reply",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "priorities": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "departments": {
+      "general": "General",
+      "technical": "Technical",
+      "abuse": "Abuse",
+      "billing": "Billing"
+    },
+    "reply": "Reply",
+    "replies": "Replies",
+    "empty": "No tickets open",
+    "createdAt": "Created on"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read more",
+    "publishedOn": "Published on {{date}}",
+    "by": "by {{author}}",
+    "views": "{{count}} views",
+    "categories": "Categories",
+    "tags": "Tags",
+    "sharePost": "Share",
+    "relatedPosts": "Related posts",
+    "comments": "Comments",
+    "empty": "No posts published"
+  },
+  "forum": {
+    "title": "Forum",
+    "categories": "Categories",
+    "topics": "Topics",
+    "replies": "Replies",
+    "newTopic": "New topic",
+    "subject": "Subject",
+    "body": "Message",
+    "lastReply": "Last reply",
+    "by": "by",
+    "pinned": "Pinned",
+    "locked": "Locked",
+    "reply": "Reply",
+    "empty": "No topics in this category"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal information",
+    "security": "Security",
+    "preferences": "Preferences",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "twoFactor": "Two-factor authentication",
+    "enable2fa": "Enable 2FA",
+    "disable2fa": "Disable 2FA",
+    "scanQr": "Scan this QR code with your authenticator app (Google Authenticator, Authy)",
+    "enterCode": "Enter the 6-digit code",
+    "apiTokens": "API tokens",
+    "createToken": "Create token",
+    "tokenName": "Token name",
+    "scopes": "Scopes",
+    "copyToken": "Copy now — it won't be shown again",
+    "language": "Language",
+    "timezone": "Timezone"
+  },
+  "admin": {
+    "title": "Administration",
+    "users": "Users",
+    "accounts": "Accounts",
+    "tickets": "Tickets",
+    "blog": "Blog",
+    "forum": "Forum",
+    "settings": "Settings",
+    "system": "System",
+    "stats": {
+      "totalUsers": "Total users",
+      "totalAccounts": "Total accounts",
+      "activeAccounts": "Active accounts",
+      "suspendedAccounts": "Suspended accounts",
+      "openTickets": "Open tickets",
+      "totalPosts": "Blog posts",
+      "totalTopics": "Forum topics"
+    },
+    "user": {
+      "role": "Role",
+      "status": "Status",
+      "actions": {
+        "suspend": "Suspend",
+        "activate": "Activate",
+        "ban": "Ban",
+        "delete": "Delete",
+        "makeAdmin": "Make admin",
+        "makeMod": "Make moderator"
+      }
+    }
+  },
+  "errors": {
+    "404": "Page not found",
+    "404desc": "The page you're looking for doesn't exist or has been moved.",
+    "500": "Internal server error",
+    "500desc": "Something went wrong. Please try again later.",
+    "403": "Access denied",
+    "403desc": "You don't have permission to access this resource.",
+    "401": "Not authenticated",
+    "401desc": "You must sign in to access this area.",
+    "networkError": "Network error. Check your connection.",
+    "serverError": "Server error. Please try again.",
+    "validationError": "Invalid data",
+    "unauthorized": "Unauthorized",
+    "rateLimited": "Too many requests. Try again later.",
+    "sessionExpired": "Session expired. Please sign in again."
+  },
+  "validation": {
+    "required": "{{field}} is required",
+    "minLength": "{{field}} must be at least {{min}} characters",
+    "maxLength": "{{field}} must be at most {{max}} characters",
+    "email": "Invalid email",
+    "passwordWeak": "Password too weak",
+    "passwordMismatch": "Passwords don't match",
+    "invalidDomain": "Invalid domain",
+    "invalidCron": "Invalid cron expression"
+  },
+  "success": {
+    "saved": "Changes saved",
+    "created": "Created successfully",
+    "updated": "Updated successfully",
+    "deleted": "Deleted successfully",
+    "sent": "Sent successfully",
+    "copied": "Copied to clipboard"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "product": "Product",
+    "company": "Company",
+    "resources": "Resources",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "abuse": "Report abuse",
+    "status": "Service status",
+    "community": "Community",
+    "madeWith": "Made with"
+  },
+  "language": {
+    "selector": "Language",
+    "pt": "Português",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  }
+}
