@@ -1,0 +1,61 @@
+# CARSAI HOST -- production overrides
+#
+# Usage:
+#   docker compose -f docker/docker-compose.yml \
+#                  -f docker/docker-compose.prod.yml up -d --build
+#
+# Differences from the base file:
+#   - restart: always (instead of unless-stopped)
+#   - env_file: .env.prod (so secrets are not in the compose file)
+#   - healthchecks (the images already define them; we make the
+#     orchestrator depend on them via condition: service_healthy)
+#   - no published ports for api (only the web nginx is exposed)
+
+services:
+  api:
+    restart: always
+    env_file:
+      - ../.env.prod
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1G
+        reservations:
+          memory: 256M
+    ports: !reset []
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  web:
+    restart: always
+    env_file:
+      - ../.env.prod
+    depends_on:
+      api:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+    ports:
+      - "80:80"
+      - "443:443"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  installer:
+    restart: "no"
+    profiles:
+      - installer
+    depends_on:
+      api:
+        condition: service_healthy

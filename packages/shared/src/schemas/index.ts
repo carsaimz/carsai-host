@@ -256,6 +256,9 @@ export const installerSchema = z
     smtpUser: z.string().optional(),
     smtpPass: z.string().optional(),
     smtpFrom: z.string().email().optional(),
+    // Site settings (used by the installer wizard, persisted to .env).
+    defaultLocale: z.enum(['pt', 'en', 'fr', 'es']).default('pt'),
+    timezone: z.string().min(1).max(50).default('UTC'),
   })
   .refine((d) => d.adminPassword === d.adminPasswordConfirm, {
     message: 'As palavras-passe não coincidem',

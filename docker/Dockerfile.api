@@ -1,0 +1,81 @@
+# syntax=docker/dockerfile:1.7
+
+# CARSAI HOST -- API image
+#
+# Multi-stage build:
+#   1. deps      : install pnpm + workspace deps (cached layer)
+#   2. build     : compile @carsai/shared then @carsai/api via tsc
+#   3. runtime   : slim Node 20 alpine image with only dist + node_modules
+#
+# The resulting image runs `node scripts/migrate.js` (to apply pending
+# migrations) then `node dist/index.js` to start the API on port 3000.
+
+ARG NODE_VERSION=20-alpine
+
+# ─── Stage 1: deps ────────────────────────────────────────────
+FROM node:${NODE_VERSION} AS deps
+RUN apk add --no-cache libc6-compat python3 make g++ \
+    && npm install -g pnpm@9.12.0
+WORKDIR /app
+
+# Copy workspace manifests first for better layer caching.
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json tsconfig.base.json ./
+COPY packages/shared/package.json packages/shared/
+COPY packages/api/package.json packages/api/
+
+RUN pnpm install --frozen-lockfile --filter @carsai/api... --filter @carsai/shared...
+
+# ─── Stage 2: build ───────────────────────────────────────────
+FROM deps AS build
+WORKDIR /app
+
+# Copy source for shared + api (and the shared source that api depends on).
+COPY packages/shared/ packages/shared/
+COPY packages/api/ packages/api/
+
+# Build shared first (api imports its dist via workspace resolution).
+RUN pnpm --filter @carsai/shared build \
+    && pnpm --filter @carsai/api build
+
+# Prune dev dependencies so the runtime image is smaller.
+RUN pnpm prune --prod --filter @carsai/api
+
+# ─── Stage 3: runtime ─────────────────────────────────────────
+FROM node:${NODE_VERSION} AS runtime
+RUN apk add --no-cache libc6-compat tini \
+    && addgroup -S carsai && adduser -S carsai -G carsai
+
+WORKDIR /app
+
+# Copy built API + pruned node_modules + shared dist.
+COPY --from=build --chown=carsai:carsai /app/packages/api/dist ./packages/api/dist
+COPY --from=build --chown=carsai:carsai /app/packages/api/package.json ./packages/api/package.json
+COPY --from=build --chown=carsai:carsai /app/packages/api/scripts ./packages/api/scripts
+COPY --from=build --chown=carsai:carsai /app/packages/api/migrations ./packages/api/migrations
+COPY --from=build --chown=carsai:carsai /app/packages/shared/dist ./packages/shared/dist
+COPY --from=build --chown=carsai:carsai /app/packages/shared/package.json ./packages/shared/package.json
+COPY --from=build --chown=carsai:carsai /app/node_modules ./node_modules
+COPY --from=build --chown=carsai:carsai /app/package.json ./package.json
+COPY --from=build --chown=carsai:carsai /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+# Data directory for the SQLite file + lockfile (mounted as a volume).
+RUN install -d -o carsai -g carsai /app/packages/api/data /app/packages/api/logs /app/packages/api/uploads
+
+USER carsai
+
+ENV NODE_ENV=production \
+    PORT=3000 \
+    DATABASE_URL=./packages/api/data/carsai.db \
+    LOG_DIR=./packages/api/logs \
+    INSTALLED_LOCKFILE=./packages/api/data/.installed
+
+EXPOSE 3000
+
+# Run migrations + start the server in one command. If migrations fail,
+# the container exits so the orchestrator can retry.
+WORKDIR /app/packages/api
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["sh", "-c", "node scripts/migrate.js && node dist/index.js"]
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD wget -qO- http://localhost:3000/api/v1/health || exit 1

@@ -1,0 +1,76 @@
+# CARSAI HOST -- base docker-compose (development / staging)
+#
+# SQLite is a file so there is no separate database service. The api
+# container writes to a named volume mounted at
+# /app/packages/api/data which holds carsai.db + the .installed
+# lockfile + WAL/SHM files.
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    image: carsai-host-api:latest
+    container_name: carsai-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      APP_URL: http://localhost:8080
+      API_URL: http://api:3000
+      APP_NAME: CARSAI HOST
+      JWT_SECRET: ${JWT_SECRET:-please-change-me-to-a-64-char-random-string}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-please-change-me-too-to-64-random-chars}
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      CORS_ORIGINS: http://localhost:8080,http://localhost:5173,http://localhost:5174
+      RATE_LIMIT_GLOBAL_MAX: "300"
+      RATE_LIMIT_AUTH_MAX: "10"
+      LOG_LEVEL: info
+    volumes:
+      - api-data:/app/packages/api/data
+      - api-logs:/app/packages/api/logs
+      - api-uploads:/app/packages/api/uploads
+    ports:
+      - "3000:3000"
+    networks:
+      - carsai-net
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+      args:
+        VITE_API_URL: ""
+    image: carsai-host-web:latest
+    container_name: carsai-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+    networks:
+      - carsai-net
+
+  installer:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.installer
+    image: carsai-host-installer:latest
+    container_name: carsai-installer
+    restart: "no"
+    depends_on:
+      - api
+    ports:
+      - "8081:80"
+    networks:
+      - carsai-net
+
+volumes:
+  api-data:
+  api-logs:
+  api-uploads:
+
+networks:
+  carsai-net:
+    driver: bridge

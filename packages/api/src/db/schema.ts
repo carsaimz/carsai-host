@@ -29,7 +29,7 @@ export const users = sqliteTable('users', {
   avatarUrl: text('avatar_url'),
   locale: text('locale').notNull().default('pt'),
   timezone: text('timezone'),
-  oauthProvider: text('oauth_provider', { enum: ['google', 'github', null] }),
+  oauthProvider: text('oauth_provider', { enum: ['google', 'github'] }),
   oauthId: text('oauth_id'),
   lastLoginAt: text('last_login_at'),
   lastLoginIp: text('last_login_ip'),

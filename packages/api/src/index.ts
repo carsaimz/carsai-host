@@ -18,6 +18,7 @@ import { ticketsRouter } from './routes/tickets.js';
 import { blogRouter } from './routes/blog.js';
 import { forumRouter } from './routes/forum.js';
 import { adminRouter } from './routes/admin.js';
+import { installRouter } from './routes/install.js';
 
 const app = express();
 
@@ -41,6 +42,13 @@ app.use(
     skip: (req) => req.path === '/api/v1/health',
   }),
 );
+
+// ─── Installer routes (mounted BEFORE the global rate limiter) ──
+// The installer is a one-time public setup flow: it must work on a
+// fresh server without auth and without being throttled. Each route
+// that mutates state is guarded internally by the requireNotInstalled
+// middleware (returns 403 once data/.installed exists).
+app.use('/api/v1/install', installRouter);
 
 // ─── Global rate limiter ───────────────────────────────────────
 const globalLimiter = rateLimit({

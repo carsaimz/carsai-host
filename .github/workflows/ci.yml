@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+        continue-on-error: true # lint should not block PRs initially
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Run migrations (smoke test)
+        run: |
+          cd packages/api
+          cp .env.example .env
+          # Generate a random JWT secret so env validation passes.
+          sed -i "s|JWT_SECRET=.*|JWT_SECRET=$(openssl rand -hex 32)|" .env
+          sed -i "s|JWT_REFRESH_SECRET=.*|JWT_REFRESH_SECRET=$(openssl rand -hex 32)|" .env
+          node scripts/migrate.js
+
+      - name: Run tests
+        run: pnpm test
+        continue-on-error: true # test suite is incremental
+
+      - name: Upload build artifacts
+        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-node-${{ matrix.node-version }}
+          path: |
+            packages/api/dist
+            packages/web/dist
+            packages/installer/dist
+            packages/shared/dist
+          retention-days: 7

@@ -1,0 +1,49 @@
+# syntax=docker/dockerfile:1.7
+
+# CARSAI HOST -- Web image
+#
+# Multi-stage build:
+#   1. deps   : install pnpm + workspace deps (cached layer)
+#   2. build  : compile @carsai/shared then build @carsai/web with Vite
+#   3. runtime: nginx:alpine serving the static dist + proxying /api
+
+ARG NODE_VERSION=20-alpine
+
+# ─── Stage 1: deps ────────────────────────────────────────────
+FROM node:${NODE_VERSION} AS deps
+RUN apk add --no-cache libc6-compat \
+    && npm install -g pnpm@9.12.0
+WORKDIR /app
+
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json tsconfig.base.json ./
+COPY packages/shared/package.json packages/shared/
+COPY packages/web/package.json packages/web/
+
+RUN pnpm install --frozen-lockfile --filter @carsai/web... --filter @carsai/shared...
+
+# ─── Stage 2: build ───────────────────────────────────────────
+FROM deps AS build
+WORKDIR /app
+
+# Build-time env: the URL the API will be reachable at from the browser.
+# In docker-compose this is "" (empty) so the SPA uses relative /api paths
+# and the gateway nginx proxies them to the api service.
+ARG VITE_API_URL=""
+ENV VITE_API_URL=$VITE_API_URL
+
+COPY packages/shared/ packages/shared/
+COPY packages/web/ packages/web/
+
+RUN pnpm --filter @carsai/shared build \
+    && pnpm --filter @carsai/web build
+
+# ─── Stage 3: runtime (nginx) ─────────────────────────────────
+FROM nginx:1.27-alpine AS runtime
+RUN rm /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/carsai.conf
+COPY --from=build /app/packages/web/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD wget -qO- http://localhost/ || exit 1

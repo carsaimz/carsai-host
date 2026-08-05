@@ -2,10 +2,16 @@
  * CARSAI HOST — Validation middleware (Zod)
  */
 import type { NextFunction, Request, Response } from 'express';
-import type { AnyZodObject, ZodError } from 'zod';
+import type { ZodTypeAny, ZodError } from 'zod';
 import { fail } from '../utils/response.js';
 
-export function validate(schema: AnyZodObject, source: 'body' | 'query' | 'params' = 'body') {
+/**
+ * Validate the request body / query / params against a Zod schema.
+ *
+ * Accepts any Zod type (ZodObject, ZodEffects, ZodIntersection, ...)
+ * so schemas that use `.refine()` or `.superRefine()` work too.
+ */
+export function validate(schema: ZodTypeAny, source: 'body' | 'query' | 'params' = 'body') {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsed = await schema.parseAsync(req[source]);

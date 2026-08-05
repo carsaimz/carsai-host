@@ -1,0 +1,49 @@
+# Build context exclusions for the docker/ Dockerfiles.
+# Keeps build cache fast and prevents leaking secrets into images.
+
+# VCS
+.git
+.gitignore
+.github
+.editorconfig
+.nvmrc
+
+# Dependencies (faster to install fresh inside the image)
+**/node_modules
+**/.pnpm-store
+
+# Build outputs (we rebuild inside the image)
+**/dist
+**/build
+**/.turbo
+**/*.tsbuildinfo
+
+# Environment files (must never be baked into the image)
+.env
+.env.*
+!.env.example
+
+# Database + data dir (mounted as a volume at runtime)
+**/data
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/logs
+**/uploads
+
+# Native mobile projects (not relevant for api/web/installer images)
+packages/mobile/ios
+packages/mobile/android
+packages/mobile/.gradle
+
+# Docs + scripts that aren't needed at runtime
+packages/docs
+**/coverage
+**/.eslintcache
+**/.cache
+
+# CI / IDE / OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db

@@ -1,3 +1,9 @@
 packages:
+  # All workspace packages except mobile — the mobile package is a
+  # Capacitor scaffold that the developer installs separately when
+  # adding iOS/Android platforms (see packages/mobile/README.md).
+  # Excluding it keeps `pnpm install` at the root fast and prevents
+  # the Capacitor native deps from being downloaded on every CI run.
   - "packages/*"
   - "packages/installer"
+  - "!packages/mobile"
