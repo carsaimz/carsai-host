@@ -17,6 +17,13 @@ import { accountsRouter } from './routes/accounts.js';
 import { ticketsRouter } from './routes/tickets.js';
 import { blogRouter } from './routes/blog.js';
 import { forumRouter } from './routes/forum.js';
+import { domainsRouter } from './routes/domains.js';
+import { sslRouter } from './routes/ssl.js';
+import { backupsRouter } from './routes/backups.js';
+import { cronRouter } from './routes/cron.js';
+import { notificationsRouter } from './routes/notifications.js';
+import { webhooksRouter } from './routes/webhooks.js';
+import { apiTokensRouter } from './routes/api-tokens.js';
 import { adminRouter } from './routes/admin.js';
 import { installRouter } from './routes/install.js';
 
@@ -82,6 +89,13 @@ app.use('/api/v1/accounts', accountsRouter);
 app.use('/api/v1/tickets', ticketsRouter);
 app.use('/api/v1/blog', blogRouter);
 app.use('/api/v1/forum', forumRouter);
+app.use('/api/v1/domains', domainsRouter);
+app.use('/api/v1/ssl', sslRouter);
+app.use('/api/v1/backups', backupsRouter);
+app.use('/api/v1/cron', cronRouter);
+app.use('/api/v1/notifications', notificationsRouter);
+app.use('/api/v1/webhooks', webhooksRouter);
+app.use('/api/v1/api-tokens', apiTokensRouter);
 app.use('/api/v1/admin', adminRouter);
 
 // ─── 404 + error handler ───────────────────────────────────────
@@ -91,11 +105,11 @@ app.use(errorHandler);
 // ─── Start server ──────────────────────────────────────────────
 const port = env.port;
 const server = app.listen(port, () => {
-  logger.info(`🚀 CARSAI HOST API running on http://localhost:${port}`);
-  logger.info(`   Environment: ${env.nodeEnv}`);
-  logger.info(`   CORS origins: ${env.cors.origins.join(', ')}`);
+  logger.info(`CARSAI HOST API running on http://localhost:${port}`);
+  logger.info(`  Environment: ${env.nodeEnv}`);
+  logger.info(`  CORS origins: ${env.cors.origins.join(', ')}`);
   if (!env.mofh.resellerUsername) {
-    logger.warn('   ⚠️  MOFH not configured — set MOFH_RESELLER_USERNAME/PASSWORD');
+    logger.warn('  MOFH not configured — set MOFH_RESELLER_USERNAME/PASSWORD');
   }
 });
 
