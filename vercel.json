@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
-  "buildCommand": "pnpm install --frozen-lockfile && pnpm --filter @carsai/shared build && pnpm --filter @carsai/web build",
-  "outputDirectory": "packages/web/dist",
+  "buildCommand": "pnpm install --frozen-lockfile && pnpm --filter @carsai/shared build && pnpm --filter @carsai/web build && rm -rf dist && cp -r packages/web/dist ./dist",
+  "outputDirectory": "dist",
   "installCommand": "pnpm install --frozen-lockfile",
   "devCommand": "pnpm --filter @carsai/web dev",
   "rewrites": [
