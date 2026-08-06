@@ -410,6 +410,32 @@ Rate-limit global: **100 req / 15 min** por IP. Endpoints de auth: **5 req / 15 
 
 ---
 
+## 🚀 Deploy na Vercel
+
+O frontend (`packages/web`) está pronto para deploy na Vercel como
+SPA estática. A configuração está em `vercel.json` na raiz do repo:
+
+- **Framework:** Vite
+- **Build command:** `pnpm install --frozen-lockfile && pnpm --filter @carsai/shared build && pnpm --filter @carsai/web build`
+- **Output directory:** `packages/web/dist`
+- **Rewrites:** todas as rotas não-`/api/*` reescrevem para `/index.html` (React Router)
+- **Headers:** cache imutável para assets em `/assets/*`, no-cache para `index.html`, headers de segurança (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+
+Passos:
+
+1. Importa o repo `carsaimz/carsai-host` na Vercel.
+2. Configura a variável de ambiente `VITE_API_URL` apontando para o backend
+   (ex.: `https://api.carsai.host/api/v1`).
+3. Deploy. A Vercel deteta o `vercel.json` automaticamente.
+
+> O backend (`packages/api`) usa Express + better-sqlite3 — um servidor
+> Node.js long-running que não roda no Vercel serverless. Hospeda-o
+> separadamente (Railway, Fly.io, VPS, ou qualquer Node host). Todas
+> as credenciais (MOFH, SMTP, OAuth, etc.) são guardadas na base de
+> dados e configuradas dentro do app em **Admin → Settings**.
+
+---
+
 ## 📱 Mobile (Capacitor)
 
 A app mobile (em `packages/mobile`) é construída com Capacitor 6 e partilha o
