@@ -216,8 +216,8 @@ export function MofhCredentialsStep({ value, onChange, onNext, onBack }: MofhCre
           (<a className="underline" href="https://ifastnet.com/affiliate.html" target="_blank" rel="noreferrer">https://ifastnet.com/affiliate.html</a>),
           then log in to the reseller panel at
           <code className="mx-1 rounded bg-muted px-1.5 py-0.5 font-mono">panel.myownfreehost.com</code>
-          to find your API username and password. Full instructions in
-          <code className="mx-1 rounded bg-muted px-1.5 py-0.5 font-mono">packages/docs/MOFH.md</code>.
+          to find your API username and password. You can also configure
+          these later inside the admin settings panel.
         </p>
       </div>
 

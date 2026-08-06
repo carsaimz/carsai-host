@@ -53,7 +53,7 @@ export function SuccessStep({ state }: SuccessStepProps) {
           <li>Log in to the admin panel with your admin credentials.</li>
           <li>Verify the SMTP configuration by sending a test email from the admin panel.</li>
           <li>Customize your branding (logo, colors) under Admin &rarr; Settings.</li>
-          <li>Review the security checklist in <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">packages/docs/SECURITY.md</code>.</li>
+          <li>Review the SECURITY.md file at the repo root for the security checklist.</li>
         </ol>
       </div>
 

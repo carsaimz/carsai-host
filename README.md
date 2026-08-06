@@ -359,8 +359,7 @@ A detecção de idioma segue a ordem:
 
 ## 🔌 API REST
 
-A API segue o padrão RESTful em `/api/v1/*`. Documentação OpenAPI completa em
-`packages/docs/api/openapi.yaml`.
+A API segue o padrão RESTful em `/api/v1/*`.
 
 ### Endpoints principais
 
@@ -439,21 +438,6 @@ npx cap open android
 
 ---
 
-## 📚 Documentação
-
-Toda a documentação está em `packages/docs/`:
-
-- `INSTALL.md` — guia de instalação detalhado
-- `ARCHITECTURE.md` — diagramas e decisões técnicas
-- `API.md` — referência completa da API REST
-- `I18N.md` — guia de tradução
-- `SECURITY.md` — práticas de segurança
-- `CONTRIBUTING.md` — como contribuir
-- `DEPLOYMENT.md` — deploy em produção (Docker / PM2 / Nginx)
-- `MOFH.md` — guia da integração iFastNet/MOFH
-
----
-
 ## 🔒 Segurança
 
 - **JWT** com expiração curta (15min) + **refresh token** (7 dias, rotação)
@@ -475,7 +459,7 @@ Reportar vulnerabilidades: ver `SECURITY.md`.
 
 ## 🤝 Contribuir
 
-Lê [`CONTRIBUTING.md`](packages/docs/CONTRIBUTING.md) antes de submeter PRs.
+Lê [`CONTRIBUTING.md`](CONTRIBUTING.md) antes de submeter PRs.
 
 Convenção de commits: **Conventional Commits**
 

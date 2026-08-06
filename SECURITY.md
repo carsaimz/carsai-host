@@ -1,12 +1,8 @@
 # Security Policy
 
-CARSAI HOST takes security seriously. This file is a short summary of
-our security policy. The full, detailed policy — including threat
-model, mitigation catalog, encryption details, and hardening
-checklists — lives in
-[`packages/docs/SECURITY.md`](packages/docs/SECURITY.md). Operators
-and security researchers should read that document in full before
-deploying or auditing the platform.
+CARSAI HOST takes security seriously. This file summarises our
+security policy. Operators and security researchers should read it
+in full before deploying or auditing the platform.
 
 ## Reporting a Vulnerability
 
@@ -43,9 +39,7 @@ benefit from security patches.
 
 ## Security Highlights
 
-The full details are in
-[`packages/docs/SECURITY.md`](packages/docs/SECURITY.md). The most
-important points:
+The most important points:
 
 - **Passwords** are hashed with bcrypt at cost factor 12.
 - **JWT access tokens** expire in 15 minutes; **refresh tokens**

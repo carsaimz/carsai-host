@@ -126,8 +126,7 @@ export function DatabaseStep({ onNext, onBack }: DatabaseStepProps) {
           SQLite is fast, serverless, and perfect for a single-node hosting panel.
           The database is a single file in
           <code className="mx-1 rounded bg-muted px-1.5 py-0.5 font-mono">packages/api/data/</code>
-          which makes backups trivial. See packages/docs/ARCHITECTURE.md for the
-          full rationale and migration path to Postgres.
+          which makes backups trivial.
         </p>
       </div>
 

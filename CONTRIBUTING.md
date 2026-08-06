@@ -1,14 +1,9 @@
 # Contributing to CARSAI HOST
 
 Thank you for your interest in contributing to CARSAI HOST. This file
-is a short summary of how to get started. The full, detailed
-contribution guide — including branch naming, Conventional Commits,
-PR workflow, code style, testing requirements, documentation
-expectations, issue triage, and the release process — lives in
-[`packages/docs/CONTRIBUTING.md`](packages/docs/CONTRIBUTING.md).
-Please read that document in full before opening your first pull
-request. The maintainers are happy to answer questions in GitHub
-Discussions if anything is unclear.
+is a short summary of how to get started. Read it in full before
+opening your first pull request. The maintainers are happy to answer
+questions in GitHub Discussions if anything is unclear.
 
 ## Quick Start
 
@@ -97,7 +92,7 @@ chore(deps): upgrade drizzle-orm to 0.34.0
    ```
 3. Add tests for new behaviour (unit tests for services, integration
    tests for routes).
-4. Update documentation in `packages/docs/` if your change affects
+4. Update the README and inline code comments if your change affects
    user-visible behaviour.
 
 ## Pull Request Workflow

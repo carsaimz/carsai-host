@@ -92,12 +92,12 @@ jobs:
         id: notes
         run: |
           TAG="${GITHUB_REF#refs/tags/}"
-          # Extract the section of packages/docs/CHANGELOG.md matching this tag.
+          # Extract the section of CHANGELOG.md matching this tag.
           NOTES=$(awk -v tag="${TAG#v}" '
             /^## \[/{ in_sec=0 }
             $0 ~ "^## \\[" tag "\\]"{ in_sec=1; next }
             in_sec { print }
-          ' packages/docs/CHANGELOG.md)
+          ' CHANGELOG.md)
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "${NOTES}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT

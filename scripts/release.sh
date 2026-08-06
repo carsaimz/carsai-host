@@ -106,7 +106,7 @@ for pkg in package.json packages/*/package.json; do
 done
 
 # ─── Update CHANGELOG.md ───────────────────────────────────────
-CHANGELOG="packages/docs/CHANGELOG.md"
+CHANGELOG="CHANGELOG.md"
 if [[ -f "$CHANGELOG" ]]; then
   TODAY_ISO="$(date +%Y-%m-%d)"
   # Insert a new section after the # Changelog header.
@@ -132,7 +132,7 @@ PY
 fi
 
 # ─── Commit, tag, push ─────────────────────────────────────────
-git add package.json packages/*/package.json packages/docs/CHANGELOG.md
+git add package.json packages/*/package.json CHANGELOG.md
 git commit -m "chore(release): v${NEW_VERSION}
 
 Released by scripts/release.sh on $(date -u +%Y-%m-%dT%H:%M:%SZ)."
