@@ -73,7 +73,7 @@ accountsRouter.post(
     }
 
     // Chamar MOFH API para criar a conta REAL
-    if (!mofhClient.isConfigured()) {
+    if (!(await mofhClient.isConfigured())) {
       return fail(
         res,
         'MOFH_NOT_CONFIGURED',
@@ -217,7 +217,7 @@ accountsRouter.post(
       return forbidden(res);
     }
 
-    if (!mofhClient.isConfigured()) {
+    if (!(await mofhClient.isConfigured())) {
       return fail(res, 'MOFH_NOT_CONFIGURED', 'MOFH not configured', 503);
     }
 
@@ -256,7 +256,7 @@ accountsRouter.post(
       return forbidden(res);
     }
 
-    if (!mofhClient.isConfigured()) {
+    if (!(await mofhClient.isConfigured())) {
       return fail(res, 'MOFH_NOT_CONFIGURED', 'MOFH not configured', 503);
     }
 
@@ -295,7 +295,7 @@ accountsRouter.post(
       return forbidden(res);
     }
 
-    if (!mofhClient.isConfigured()) {
+    if (!(await mofhClient.isConfigured())) {
       return fail(res, 'MOFH_NOT_CONFIGURED', 'MOFH not configured', 503);
     }
 

@@ -1,8 +1,13 @@
 /**
  * CARSAI HOST — Email service (Nodemailer)
+ *
+ * Lê a configuração SMTP da tabela `settings` (com fallback para env).
+ * O transport é recriado quando as configurações mudem — detectamos
+ * isso comparando o hash das configs atuais com as usadas na última
+ * criação do transport.
  */
 import nodemailer from 'nodemailer';
-import { env } from '../utils/env.js';
+import { getSmtpConfig } from './settings.js';
 import { logger } from '../utils/logger.js';
 
 interface EmailParams {
@@ -13,25 +18,46 @@ interface EmailParams {
 }
 
 let transporter: nodemailer.Transporter | null = null;
+let lastConfigHash = '';
 
-function getTransporter(): nodemailer.Transporter {
-  if (transporter) return transporter;
+function hashConfig(cfg: {
+  host: string;
+  port: number;
+  secure: boolean;
+  user: string;
+  pass: string;
+  from: string;
+}): string {
+  return `${cfg.host}|${cfg.port}|${cfg.secure}|${cfg.user}|${cfg.pass.length}|${cfg.from}`;
+}
+
+async function getTransporter(): Promise<nodemailer.Transporter> {
+  const cfg = await getSmtpConfig();
+  const h = hashConfig(cfg);
+  if (transporter && h === lastConfigHash) return transporter;
+
   transporter = nodemailer.createTransport({
-    host: env.smtp.host,
-    port: env.smtp.port,
-    secure: env.smtp.secure,
-    auth: env.smtp.user && env.smtp.pass
-      ? { user: env.smtp.user, pass: env.smtp.pass }
-      : undefined,
+    host: cfg.host,
+    port: cfg.port,
+    secure: cfg.secure,
+    auth: cfg.user && cfg.pass ? { user: cfg.user, pass: cfg.pass } : undefined,
+  });
+  lastConfigHash = h;
+  logger.info('[email] transporter recreated', {
+    host: cfg.host,
+    port: cfg.port,
+    secure: cfg.secure,
+    hasAuth: Boolean(cfg.user && cfg.pass),
   });
   return transporter;
 }
 
 export async function sendEmail(params: EmailParams): Promise<void> {
   try {
-    const t = getTransporter();
+    const t = await getTransporter();
+    const cfg = await getSmtpConfig();
     await t.sendMail({
-      from: env.smtp.from,
+      from: cfg.from,
       to: params.to,
       subject: params.subject,
       html: params.html,

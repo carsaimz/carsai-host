@@ -46,6 +46,7 @@ import { ok, fail, forbidden } from '../utils/response.js';
 import { env } from '../utils/env.js';
 import { logger } from '../utils/logger.js';
 import { MofhClient } from '../services/mofh-client.js';
+import { setMany } from '../services/settings.js';
 import { installerSchema } from '@carsai/shared';
 import type { z } from 'zod';
 
@@ -157,24 +158,18 @@ installRouter.post(
     }
 
     try {
-      const client = new MofhClient({
+      const result = await MofhClient.testCredentials({
         username: mofhResellerUser,
         password: mofhResellerPassword,
+        testDomain: mofhDefaultDomain,
       });
-      // Use domainavailable to verify credentials — it's a read-only
-      // operation that requires valid reseller auth.
-      const result = await client.checkDomainAvailability(mofhDefaultDomain);
-      if (result.available) {
+      if (result.connected) {
         return ok(res, {
           connected: true,
-          message: `MOFH reachable; ${mofhDefaultDomain} is available`,
+          message: result.message,
         });
       }
-      // If the API responded (even with available=false), credentials work.
-      return ok(res, {
-        connected: true,
-        message: `MOFH reachable; ${mofhDefaultDomain} not available (${result.message})`,
-      });
+      return fail(res, 'MOFH_ERROR', result.message, 422);
     } catch (err) {
       logger.error('[install] test-mofh failed', { err: String(err) });
       return fail(
@@ -339,6 +334,32 @@ installRouter.post(
       logger.error('[install] .env write failed', { err: String(err) });
       warnings.push(
         `Could not write .env file: ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+
+    // ── 2b. Persist credentials to the settings table ─────────
+    // The .env file is a fallback for development; in production the
+    // admin can reconfigure everything inside the app (Admin → Settings).
+    try {
+      await setMany({
+        'general.app_name': input.siteName,
+        'general.app_url': env.appUrl,
+        'general.default_locale': input.defaultLocale,
+        'mofh.reseller_username': input.mofhResellerUser,
+        'mofh.reseller_password': input.mofhResellerPassword,
+        'mofh.default_domain': input.mofhDefaultDomain,
+        'mofh.default_language': input.defaultLocale,
+        'smtp.host': input.smtpHost,
+        'smtp.port': String(input.smtpPort),
+        'smtp.user': input.smtpUser ?? '',
+        'smtp.pass': input.smtpPass ?? '',
+        'smtp.from': input.smtpFrom ?? '',
+      });
+      logger.info('[install] settings persisted to database');
+    } catch (err) {
+      logger.error('[install] settings DB write failed', { err: String(err) });
+      warnings.push(
+        `Could not persist settings to database: ${err instanceof Error ? err.message : String(err)}`,
       );
     }
 

@@ -10,6 +10,7 @@
 import { env } from '../utils/env.js';
 import { logger } from '../utils/logger.js';
 import { randomBytes } from 'node:crypto';
+import { getMofhConfig } from './settings.js';
 
 export interface MofhCreateAccountParams {
   /** Username 8 chars alfanumérico (gerado automaticamente se omitido) */
@@ -61,31 +62,82 @@ export interface MofhAccountInfo {
  *  - domainavailable → verificar disponibilidade
  */
 export class MofhClient {
-  private apiUrl: string;
-  private username: string;
-  private password: string;
-  private defaultPackage: string;
-  private defaultLanguage: string;
-
-  constructor(opts?: {
-    apiUrl?: string;
-    username?: string;
-    password?: string;
-    defaultPackage?: string;
-    defaultLanguage?: string;
-  }) {
-    this.apiUrl = opts?.apiUrl ?? env.mofh.apiUrl;
-    this.username = opts?.username ?? env.mofh.resellerUsername;
-    this.password = opts?.password ?? env.mofh.resellerPassword;
-    this.defaultPackage = opts?.defaultPackage ?? env.mofh.defaultPackage;
-    this.defaultLanguage = opts?.defaultLanguage ?? env.mofh.defaultLanguage;
+  /**
+   * Lazy-configured client. Reads credentials from the `settings` table
+   * on every call so admin-configured changes take effect immediately.
+   * Falls back to env vars when no DB row exists.
+   */
+  private async getConfig() {
+    return getMofhConfig();
   }
 
   /**
-   * Verifica se o cliente está configurado.
+   * Verifica se o cliente está configurado (tem username E password).
    */
-  isConfigured(): boolean {
-    return Boolean(this.username && this.password);
+  async isConfigured(): Promise<boolean> {
+    const cfg = await this.getConfig();
+    return Boolean(cfg.username && cfg.password);
+  }
+
+  /**
+   * Synchronous variant for backwards compatibility — uses env vars only.
+   */
+  isConfiguredSync(): boolean {
+    return Boolean(env.mofh.resellerUsername && env.mofh.resellerPassword);
+  }
+
+  /**
+   * Testa credenciais MOFH arbitrárias sem usar o cache/singleton.
+   * Usado pelo instalador e pelo painel admin (botão "Test connection").
+   */
+  static async testCredentials(opts: {
+    apiUrl?: string;
+    username: string;
+    password: string;
+    testDomain: string;
+  }): Promise<{ connected: boolean; message: string }> {
+    const apiUrl = opts.apiUrl || env.mofh.apiUrl;
+    const auth = Buffer.from(`${opts.username}:${opts.password}`).toString('base64');
+
+    const xmlBody = `<?xml version="1.0"?>
+<methodCall>
+  <methodName>domainavailable</methodName>
+  <params>
+    <param>
+      <value>
+        <struct>
+          <member><name>domain</name><value><string>${escapeXml(opts.testDomain)}</string></value></member>
+        </struct>
+      </value>
+    </param>
+  </params>
+</methodCall>`;
+
+    try {
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/xml',
+          Authorization: `Basic ${auth}`,
+          'User-Agent': 'CARSAI-HOST/1.0',
+        },
+        body: xmlBody,
+      });
+      const text = await res.text();
+      if (res.status === 401 || res.status === 403) {
+        return { connected: false, message: 'Invalid MOFH credentials (HTTP 401/403).' };
+      }
+      if (!res.ok) {
+        return { connected: false, message: `MOFH API returned HTTP ${res.status}.` };
+      }
+      const parsed = parseXmlRpcResponse(text);
+      return { connected: true, message: parsed.message || 'OK' };
+    } catch (err) {
+      return {
+        connected: false,
+        message: err instanceof Error ? err.message : String(err),
+      };
+    }
   }
 
   /**
@@ -120,9 +172,10 @@ export class MofhClient {
     raw?: unknown;
     data?: Record<string, unknown>;
   }> {
-    if (!this.isConfigured()) {
+    const cfg = await this.getConfig();
+    if (!cfg.username || !cfg.password) {
       throw new Error(
-        'MOFH client not configured. Set MOFH_RESELLER_USERNAME and MOFH_RESELLER_PASSWORD.',
+        'MOFH client not configured. Set the MOFH credentials in Admin → Settings.',
       );
     }
 
@@ -148,12 +201,12 @@ export class MofhClient {
   </params>
 </methodCall>`;
 
-    const auth = Buffer.from(`${this.username}:${this.password}`).toString('base64');
+    const auth = Buffer.from(`${cfg.username}:${cfg.password}`).toString('base64');
 
     logger.info(`[mofh] ${method} called`, { method, params: Object.keys(params) });
 
     try {
-      const res = await fetch(this.apiUrl, {
+      const res = await fetch(cfg.apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/xml',
@@ -196,10 +249,11 @@ export class MofhClient {
    * Criar nova conta de hospedagem.
    */
   async createAccount(params: MofhCreateAccountParams): Promise<MofhCreateAccountResult> {
+    const cfg = await this.getConfig();
     const username = params.username ?? this.generateUsername();
     const password = params.password ?? this.generatePassword();
-    const pkg = params.package ?? this.defaultPackage;
-    const language = params.language ?? this.defaultLanguage;
+    const pkg = params.package ?? cfg.defaultPackage;
+    const language = params.language ?? cfg.defaultLanguage;
 
     const result = await this.call('createacct', {
       username,

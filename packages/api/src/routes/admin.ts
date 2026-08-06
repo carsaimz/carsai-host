@@ -9,6 +9,13 @@ import { db, schema } from '../db/index.js';
 import { asyncHandler } from '../utils/async-handler.js';
 import { ok, fail } from '../utils/response.js';
 import { requireAdmin } from '../middleware/auth.js';
+import {
+  getAllForAdmin,
+  setMany,
+  invalidateSettingsCache,
+  SETTING_DEFS,
+} from '../services/settings.js';
+import { mofhClient } from '../services/mofh-client.js';
 import os from 'node:os';
 import process from 'node:process';
 
@@ -136,5 +143,98 @@ adminRouter.post(
       .set({ role, updatedAt: new Date().toISOString() })
       .where(eq(schema.users.id, req.params.id));
     return ok(res, { updated: true });
+  }),
+);
+
+// ─── GET /admin/settings ───────────────────────────────────────
+// Returns all settings grouped by category. Secrets are masked.
+adminRouter.get(
+  '/settings',
+  asyncHandler(async (_req, res) => {
+    const { byCategory } = await getAllForAdmin();
+    return ok(res, {
+      byCategory,
+      categories: ['general', 'mofh', 'smtp', 'oauth', 'storage', 'ssl'],
+    });
+  }),
+);
+
+// ─── PUT /admin/settings ───────────────────────────────────────
+// Accepts a flat { key: value } object. Only known keys are accepted.
+// Unknown keys are silently dropped. Secrets that arrive as the
+// masked placeholder '••••••••' are no-ops (preserves the stored value).
+adminRouter.put(
+  '/settings',
+  asyncHandler(async (req, res) => {
+    const input = (req.body ?? {}) as Record<string, string>;
+    const knownKeys = new Set(SETTING_DEFS.map((d) => d.key));
+    const accepted: Record<string, string> = {};
+    const rejected: string[] = [];
+    for (const [k, v] of Object.entries(input)) {
+      if (knownKeys.has(k)) {
+        accepted[k] = typeof v === 'string' ? v : String(v);
+      } else {
+        rejected.push(k);
+      }
+    }
+    await setMany(accepted);
+    return ok(res, {
+      updated: Object.keys(accepted).length,
+      rejected,
+    });
+  }),
+);
+
+// ─── POST /admin/settings/test-mofh ────────────────────────────
+// Tests the MOFH credentials currently stored in the DB. Useful after
+// updating credentials to verify they work before relying on them.
+adminRouter.post(
+  '/settings/test-mofh',
+  asyncHandler(async (_req, res) => {
+    const result = await mofhClient.checkDomainAvailability('example.com');
+    return ok(res, {
+      connected: result.available !== undefined,
+      message: result.message,
+    });
+  }),
+);
+
+// ─── POST /admin/settings/test-smtp ────────────────────────────
+// Sends a test email to the admin's own address to verify SMTP config.
+adminRouter.post(
+  '/settings/test-smtp',
+  asyncHandler(async (req, res) => {
+    const user = (req as any).user;
+    const targetEmail = (req.body?.to as string) || user?.email;
+    if (!targetEmail) {
+      return fail(res, 'NO_RECIPIENT', 'Provide a recipient email in { to }', 400);
+    }
+    const { sendEmail } = await import('../services/email.js');
+    try {
+      await sendEmail({
+        to: targetEmail,
+        subject: '[CARSAI HOST] SMTP test',
+        text: 'This is a test email from CARSAI HOST. If you received it, SMTP is working.',
+        html: '<p>This is a test email from <strong>CARSAI HOST</strong>. If you received it, SMTP is working.</p>',
+      });
+      return ok(res, { sent: true, to: targetEmail });
+    } catch (err) {
+      return fail(
+        res,
+        'SMTP_TEST_FAILED',
+        err instanceof Error ? err.message : String(err),
+        500,
+      );
+    }
+  }),
+);
+
+// ─── POST /admin/settings/invalidate-cache ─────────────────────
+// Manual cache invalidation (rarely needed; writes already invalidate).
+adminRouter.post(
+  '/settings/invalidate-cache',
+  asyncHandler(async (_req, res) => {
+    invalidateSettingsCache();
+    return ok(res, { invalidated: true });
   }),
 );
