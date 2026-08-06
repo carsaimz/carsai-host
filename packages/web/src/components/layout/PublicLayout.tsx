@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Server,
   Menu,
-  X,
   Shield,
   FileText,
   LifeBuoy,
@@ -16,6 +15,13 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { ThemeToggle } from './ThemeToggle';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@carsai/shared';
 
@@ -86,61 +92,73 @@ export function PublicLayout() {
               </Button>
             </div>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile menu toggle — opens the offcanvas Sheet */}
             <Button
               variant="ghost"
               size="icon"
               className="lg:hidden"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Menu"
-              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
             >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <Menu className="h-5 w-5" />
             </Button>
           </div>
         </div>
-
-        {/* Mobile drawer */}
-        {mobileOpen && (
-          <div className="border-t border-border bg-background lg:hidden">
-            <nav className="container flex flex-col gap-1 py-4">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.to === ROUTES.HOME}
-                  onClick={() => setMobileOpen(false)}
-                  className={({ isActive }) =>
-                    cn(
-                      'rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary',
-                      isActive ? 'bg-secondary text-foreground' : 'text-muted-foreground',
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-              <div className="mt-2 flex items-center gap-2 border-t border-border pt-3">
-                <Button asChild variant="outline" size="sm" className="flex-1">
-                  <Link to={ROUTES.LOGIN} onClick={() => setMobileOpen(false)}>
-                    <LogIn className="h-4 w-4" />
-                    {t('nav.login')}
-                  </Link>
-                </Button>
-                <Button asChild size="sm" className="flex-1">
-                  <Link to={ROUTES.REGISTER} onClick={() => setMobileOpen(false)}>
-                    <UserPlus className="h-4 w-4" />
-                    {t('nav.register')}
-                  </Link>
-                </Button>
-              </div>
-              <div className="mt-2 flex items-center justify-between pt-2">
-                <LanguageSwitcher />
-              </div>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* Offcanvas mobile sidebar */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="w-3/4 max-w-xs p-0">
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Server className="h-4 w-4" />
+              </span>
+              CARSAI HOST
+            </SheetTitle>
+            <SheetDescription className="sr-only">Menu de navegação</SheetDescription>
+          </SheetHeader>
+
+          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === ROUTES.HOME}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  cn(
+                    'rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary',
+                    isActive ? 'bg-secondary text-foreground' : 'text-muted-foreground',
+                  )
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+
+            <div className="mt-4 space-y-2 border-t border-border pt-4">
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link to={ROUTES.LOGIN} onClick={() => setMobileOpen(false)}>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  {t('nav.login')}
+                </Link>
+              </Button>
+              <Button asChild className="w-full justify-start">
+                <Link to={ROUTES.REGISTER} onClick={() => setMobileOpen(false)}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  {t('nav.register')}
+                </Link>
+              </Button>
+            </div>
+
+            <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
+          </nav>
+        </SheetContent>
+      </Sheet>
 
       {/* Main content */}
       <main className="flex-1">

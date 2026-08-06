@@ -27,6 +27,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { ThemeToggle } from './ThemeToggle';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
 import { useUIStore } from '@/store/uiStore';
 import { ROUTES } from '@carsai/shared';
@@ -107,38 +114,45 @@ export function AdminLayout() {
         </div>
       </aside>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 border-r border-border bg-card p-0 shadow-xl">
-            <div className="flex h-16 items-center justify-between border-b border-border px-4">
-              <Link to={ROUTES.ADMIN} className="flex items-center gap-2 font-bold">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-destructive text-destructive-foreground">
-                  <ShieldCheck className="h-4 w-4" />
+      {/* Offcanvas mobile sidebar */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="w-72 max-w-[85vw] p-0">
+          <SheetHeader className="bg-destructive/10">
+            <SheetTitle className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-destructive text-destructive-foreground">
+                <ShieldCheck className="h-4 w-4" />
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-sm">CARSAI ADMIN</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Painel administrativo
                 </span>
-                ADMIN
+              </span>
+            </SheetTitle>
+            <SheetDescription className="sr-only">Admin navigation</SheetDescription>
+          </SheetHeader>
+          <nav className="flex-1 space-y-1 overflow-y-auto p-2" onClick={() => setMobileOpen(false)}>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => cn('sidebar-link', isActive && 'sidebar-link-active')}
+              >
+                <item.icon className="h-4 w-4" />
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+          </nav>
+          <div className="border-t border-border p-2">
+            <Button asChild variant="outline" className="w-full justify-start">
+              <Link to={ROUTES.DASHBOARD}>
+                <LayoutDashboard className="mr-2 h-4 w-4" /> Voltar ao dashboard
               </Link>
-              <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}>
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-            </div>
-            <nav className="space-y-1 p-2" onClick={() => setMobileOpen(false)}>
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) => cn('sidebar-link', isActive && 'sidebar-link-active')}
-                >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </NavLink>
-              ))}
-            </nav>
-          </aside>
-        </div>
-      )}
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-border bg-background/80 px-4 backdrop-blur lg:px-6">
